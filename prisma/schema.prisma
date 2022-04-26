@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(cuid())
+  username String @unique
+  email    String @unique
+  password String
+}
+
+model PropertyOwner {
+  id            String         @id @default(cuid())
+  boats         Boat[]
+  adventures    Adventure[]
+  cottageHouses CottageHouse[]
+}
+
+model CottageHouse {
+  id          String        @id @default(cuid())
+  name        String
+  address     String
+  description String
+  images      Bytes[]
+  roomCount   Int
+  bedsPerRoom Int
+  // slobodni termini
+  rules       String
+  owner       PropertyOwner @relation(fields: [ownerId], references: [id])
+  ownerId     String
+  // cenovnik
+}
+
+model Boat {
+  id               String        @id @default(cuid())
+  name             String
+  type             String
+  length           Float
+  engine           String
+  enginePower      Float
+  maxSpeed         Float
+  navEquipment     String
+  address          String
+  description      String
+  images           Bytes[]
+  capacity         Int
+  // slobodni termini
+  rules            String
+  fishingEquipment String
+  owner            PropertyOwner @relation(fields: [ownerId], references: [id])
+  ownerId          String
+  // cenovnik
+}
+
+model Adventure {
+  id          String        @id @default(cuid())
+  name        String
+  address     String
+  description String
+  images      Bytes[]
+  capacity    Int
+  // slobodni termini
+  rules       String
+  equipment   String
+  price       Decimal
+  owner       PropertyOwner @relation(fields: [ownerId], references: [id])
+  ownerId     String
+  // cenovnik
+}
