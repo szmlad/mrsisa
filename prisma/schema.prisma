@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -24,54 +21,66 @@ model PropertyOwner {
   cottageHouses CottageHouse[]
 }
 
+model Appointment {
+  id             String        @id @default(cuid())
+  start          DateTime
+  end            DateTime
+  CottageHouse   CottageHouse? @relation(fields: [cottageHouseId], references: [id])
+  cottageHouseId String?
+  Boat           Boat?         @relation(fields: [boatId], references: [id])
+  boatId         String?
+  Adventure      Adventure?    @relation(fields: [adventureId], references: [id])
+  adventureId    String?
+}
+
 model CottageHouse {
-  id          String        @id @default(cuid())
-  name        String
-  address     String
-  description String
-  images      Bytes[]
-  roomCount   Int
-  bedsPerRoom Int
-  // slobodni termini
-  rules       String
-  owner       PropertyOwner @relation(fields: [ownerId], references: [id])
-  ownerId     String
-  // cenovnik
+  id                    String        @id @default(cuid())
+  name                  String
+  address               String
+  description           String
+  images                Bytes[]
+  roomCount             Int
+  bedsPerRoom           Int
+  availableAppointments Appointment[]
+  rules                 String
+  owner                 PropertyOwner @relation(fields: [ownerId], references: [id])
+  ownerId               String
+  // TODO: cenovnik
 }
 
 model Boat {
-  id               String        @id @default(cuid())
-  name             String
-  type             String
-  length           Float
-  engine           String
-  enginePower      Float
-  maxSpeed         Float
-  navEquipment     String
-  address          String
-  description      String
-  images           Bytes[]
-  capacity         Int
-  // slobodni termini
-  rules            String
-  fishingEquipment String
-  owner            PropertyOwner @relation(fields: [ownerId], references: [id])
-  ownerId          String
-  // cenovnik
+  id                    String        @id @default(cuid())
+  name                  String
+  type                  String
+  length                Float
+  engine                String
+  enginePower           Float
+  maxSpeed              Float
+  navEquipment          String
+  address               String
+  description           String
+  images                Bytes[]
+  capacity              Int
+  availableAppointments Appointment[]
+  rules                 String
+  fishingEquipment      String
+  owner                 PropertyOwner @relation(fields: [ownerId], references: [id])
+  ownerId               String
+  // TODO: cenovnik
 }
 
 model Adventure {
-  id          String        @id @default(cuid())
-  name        String
-  address     String
-  description String
-  images      Bytes[]
-  capacity    Int
-  // slobodni termini
-  rules       String
-  equipment   String
-  price       Decimal
-  owner       PropertyOwner @relation(fields: [ownerId], references: [id])
-  ownerId     String
-  // cenovnik
+  id                    String        @id @default(cuid())
+  name                  String
+  address               String
+  description           String
+  images                Bytes[]
+  capacity              Int
+  availableAppointments Appointment[]
+  rules                 String
+  equipment             String
+  price                 Decimal
+  owner                 PropertyOwner @relation(fields: [ownerId], references: [id])
+  ownerId               String
+  // TODO: cenovnik
 }
